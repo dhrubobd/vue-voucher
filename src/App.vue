@@ -33,6 +33,22 @@ function addMoreItem(){
         }
     )
 }
+function getSubtotal(){
+    let subTotal = 0;
+    data.items.forEach(item=>{
+        subTotal += item.amount;
+    });
+    data.subTotal = subTotal;
+    return subTotal;
+}
+
+function getTotal(){
+    let total =0;
+    let tax = data.subTotal * data.tax / 100;
+    total = data.subTotal + tax;
+    data.total = total;
+    return total;
+}
 </script>
 
 <template>
@@ -76,13 +92,13 @@ function addMoreItem(){
             <div><input v-model="item.name" type="text" name="" id="" class="w-full"></div>
             <div><input v-model="item.quantity" type="number" name="" id="" class="w-full"></div>
             <div><input v-model="item.rate" type="text" class="w-full"></div>
-            <div class="text-right">$0.0</div>
+            <div class="text-right text-xl">$ {{ item.amount = item.quantity * item.rate }}</div>
         </div>
         <div>
             <button @click="addMoreItem()" type="submit" class="bg-green-600">+ ADD New</button>
         </div>
         <div>
-            {{ data }}
+           <!-- {{data}} --> 
         </div>
         <div class="grid grid-cols-2 gap-2 my-5">
             <div>
@@ -92,9 +108,9 @@ function addMoreItem(){
                 </textarea>
             </div>
             <div class="text-right">
-                Sub Total <input type="text" name="" id=""><br>
-                Tax <input v-model="data.tax" type="text" name="" id=""><br>
-                <strong>Total: $0.0</strong>
+                Sub Total <input :value="getSubtotal()" type="text" name="" id="" readonly class="text-right"><br>
+                Tax (%)<input v-model="data.tax" type="text" name="" id="" class="text-right"><br>
+                <strong class="text-xl">Total: ${{ getTotal() }}</strong>
             </div>
         </div>
     </div>
